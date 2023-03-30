@@ -1,0 +1,257 @@
+# i3 config file (v4)
+
+### Variables
+	set $mod Mod4
+	set $term alacritty
+	set $browser firefox
+	set $refresh_i3status killall -SIGUSR1 i3status
+	set $m1 DP-1
+	set $m2 HDMI-0
+
+# Font for window titles.
+	font pango:monospace 8
+
+# Start XDG autostart .desktop files using dex.
+	exec --no-startup-id dex-autostart --autostart --environment i3
+
+# Idle config.
+	exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --color=000000 --nofork
+#
+# Multimedia keys:
+#
+	bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+	bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+	bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+	bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+	bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause -p spotify
+	bindsym XF86AudioPrev exec --no-startup-id playerctl previous -p spotify
+	bindsym XF86AudioNext exec --no-startup-id playerctl next -p spotify
+	bindsym XF86AudioStop exec --no-startup-id playerctl stop -p spotify
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+	floating_modifier $mod
+#
+### Key bindings
+#
+# Basics:
+#
+	# Start a terminal
+	bindsym $mod+Return exec --no-startup-id $term
+
+	# Start a browser
+	bindsym $mod+w exec --no-startup-id $browser
+	bindsym $mod+Shift+w exec --no-startup-id $browser --private-window
+
+	# Kill focused window
+	bindsym $mod+Shift+q kill
+
+	# Start dmenu
+	bindsym $mod+d exec --no-startup-id "dmenu_run -nf '#BBBBBB' -nb '#222222' -sb '#005577' -sf '#EEEEEE' -fn 'monospace-10' -m 0 -b"
+
+	# Start rofi
+	bindsym XF86Search exec --no-startup-id "rofi -modi drun,run -show drun -show-icons -m DP-1"
+
+	# Start calculator
+	bindsym XF86Calculator exec --no-startup-id $term -e calc
+
+	# Start volume control
+	bindsym $mod+p exec --no-startup-id pavucontrol
+
+	# Start CPU/GPU process monitoring
+	bindsym $mod++Escape exec --no-startup-id $term -e htop
+	bindsym $mod+Shift+Escape exec --no-startup-id $term -e nvtop
+
+	# Screen lock.
+	bindsym $mod+Control+l exec "i3lock -t -i ~/.lock1.png --color=000000"
+
+	# Reload the configuration file
+	bindsym $mod+Shift+c reload
+
+	# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+	bindsym $mod+Shift+r restart
+
+	# Exit i3 (logs you out of your X session)
+	bindsym $mod+Shift+e exec i3-msg exit
+
+
+# Moving around:
+	# change focus
+	bindsym $mod+h focus left
+	bindsym $mod+j focus down
+	bindsym $mod+k focus up
+	bindsym $mod+l focus right
+
+	# move focused window
+	bindsym $mod+Shift+h move left
+	bindsym $mod+Shift+j move down
+	bindsym $mod+Shift+k move up
+	bindsym $mod+Shift+l move right
+
+	# Jump to the latest "urgent" window.
+	bindsym $mod+u [urgent=latest] focus
+
+	# Move position to center
+	bindsym $mod+c move position center
+#
+# Layout stuff:
+#
+	# Layout mode for new containers
+	#workspace_layout stacking
+
+	# split in horizontal/vertical orientation
+	bindsym $mod+o split toggle
+
+	# enter fullscreen mode for the focused container
+	bindsym $mod+f fullscreen toggle
+
+	# change container layout (stacked, tabbed, toggle split)
+	bindsym $mod+s layout stacking
+	bindsym $mod+t layout tabbed
+
+	# toggle tiling / floating
+	bindsym $mod+Shift+space floating toggle
+
+	# change focus between tiling / floating windows
+	bindsym $mod+space focus mode_toggle
+
+	# Disable title bars.
+	for_window [class="^.*"] border pixel 1
+	# Hiding borders
+	hide_edge_borders smart
+
+#
+# Workspaces:
+#
+	# Switch to workspace
+	bindsym $mod+1 workspace number 1
+	bindsym $mod+2 workspace number 2
+	bindsym $mod+3 workspace number 3
+	bindsym $mod+4 workspace number 4
+	bindsym $mod+5 workspace number 5
+	bindsym $mod+6 workspace number 6
+	bindsym $mod+7 workspace number 7
+	bindsym $mod+8 workspace number 8
+	bindsym $mod+9 workspace number 9
+	bindsym $mod+0 workspace number 10
+
+	# Move focused container to workspace
+	bindsym $mod+Shift+1 move container to workspace number 1
+	bindsym $mod+Shift+2 move container to workspace number 2
+	bindsym $mod+Shift+3 move container to workspace number 3
+	bindsym $mod+Shift+4 move container to workspace number 4
+	bindsym $mod+Shift+5 move container to workspace number 5
+	bindsym $mod+Shift+6 move container to workspace number 6
+	bindsym $mod+Shift+7 move container to workspace number 7
+	bindsym $mod+Shift+8 move container to workspace number 8
+	bindsym $mod+Shift+9 move container to workspace number 9
+	bindsym $mod+Shift+0 move container to workspace number 10
+
+	# Workspaces on specific screens
+	workspace 1 output $m1
+	workspace 2 output $m1
+	workspace 3 output $m1
+	workspace 4 output $m1
+	workspace 5 output $m1
+	workspace 6 output $m1
+	workspace 7 output $m1
+	workspace 8 output $m1
+	workspace 9 output $m2
+	workspace 10 output $m2
+
+	# Changing workspaces
+	bindsym $mod+b workspace prev
+	bindsym $mod+n workspace next
+
+	# Changing output
+	bindsym $mod+semicolon focus output DP-5
+	bindsym $mod+colon focus output HDMI-0
+
+#
+# Scratchpad
+#
+	# Move to the scratchpad
+	bindsym $mod+Shift+minus move scratchpad
+	# Show the next scratchpad
+	bindsym $mod+minus scratchpad show
+
+#
+# Screenshot
+#
+	# Screenshot and copy to clipboard
+	bindsym Print exec --no-startup-id maim -s | xclip -selection clipboard -t image/png
+	# Full screenshot
+	bindsym $mod+Print exec --no-startup-id maim -i $(xdotool getactivewindow) ~/pictures/$(date +%s).png
+#
+# Resize windows:
+#
+mode "resize" {
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+#
+# Color scheme:
+#
+	# class                 border  bground text    indicator child_border
+	client.focused          #83CAFA #51A2DA #FFFFFF #83CAFA   #51A2DA
+	client.focused_inactive #8C8C8C #4C4C4C #FFFFFF #4C4C4C   #8C8C8C
+	client.unfocused        #4C4C4C #222222 #888888 #292D2E   #222222
+	client.urgent           #EC69A0 #DB3279 #FFFFFF #DB3279   #DB3279
+	client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #0C0C0C
+
+	client.background       #FFFFFF
+
+#
+# Status Bar:
+#
+bar {
+  colors {
+    background #000000
+    statusline #FFFFFF
+    separator  #666666
+
+    focused_workspace  #83CAFA #51A2DA #FFFFFF
+    active_workspace   #3C6EB4 #294172 #FFFFFF
+    inactive_workspace #8C8C8C #4C4C4C #888888
+    urgent_workspace   #EC69A0 #DB3279 #FFFFFF
+    binding_mode       #b691d3 #A07CBC #FFFFFF
+  }
+  status_command i3status -c ~/.config/i3/i3status.conf
+  position bottom
+  output $m1
+}
+
+#
+# Misc:
+#
+	# Automatically putting clients on specific workspaces
+	assign [class="firefox"] workspace 2
+	assign [class="thunderbird"] workspace 2
+	assign [class="Blender"] workspace 3
+	assign [class="Steam"] workspace 8
+	assign [class="discord"] workspace 9
+	assign [class="Spotify"] workspace 9
+	assign [class="PureRef"] workspace 10
+
+	# Some applications needs to be floating.
+	for_window [class="Gcolor3"] floating enable
+	for_window [class="Gcolor3"] move position center
+	for_window [class="pentablet"] floating enable
+	for_window [class="pentablet"] move position center
+
+	# Most pop-up windows floating.
+	for_window [window_role="pop-up"] floating enable
+	for_window [window_role="bubble"] floating enable
+	for_window [window_role="task_dialog"] floating enable
+	for_window [window_role="Preferences"] floating enable
+	for_window [window_type="dialog"] floating enable
+	for_window [window_type="menu"] floating enable
