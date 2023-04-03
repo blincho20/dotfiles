@@ -181,11 +181,32 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+#
+# Color scheme:
+# class                 border  bground text    indicator child_border
+client.focused          #83CAFA #51A2DA #FFFFFF #83CAFA   #51A2DA
+client.focused_inactive #8C8C8C #4C4C4C #FFFFFF #4C4C4C   #8C8C8C
+client.unfocused        #4C4C4C #222222 #888888 #292D2E   #222222
+client.urgent           #EC69A0 #DB3279 #FFFFFF #DB3279   #DB3279
+client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #0C0C0C
+
+client.background       #FFFFFF
 
 #
 # Status Bar:
 #
 bar {
+colors {
+    background #000000
+    statusline #FFFFFF
+    separator  #666666
+
+    focused_workspace  #83CAFA #51A2DA #FFFFFF
+    active_workspace   #3C6EB4 #294172 #FFFFFF
+    inactive_workspace #8C8C8C #4C4C4C #888888
+    urgent_workspace   #EC69A0 #DB3279 #FFFFFF
+    binding_mode       #b691d3 #A07CBC #FFFFFF
+  }
   status_command i3blocks -c ~/.config/i3/i3blocks.conf
   position bottom
   tray_output none
@@ -201,12 +222,11 @@ bar {
 	assign [class="Blender"] workspace 3
 	assign [class="Steam"] workspace 4
 	assign [class="discord"] workspace 5
-	assign [class="Spotify"] workspace 5
 	assign [class="PureRef"] workspace 5
 
 	# Some applications needs to be floating.
-	for_window [class="Gcolor3"] floating enable
-	for_window [class="Gcolor3"] move position center
+	for_window [class="Gpick"] floating enable
+	for_window [class="Gpick"] move position center
 	for_window [class="pentablet"] floating enable
 	for_window [class="pentablet"] move position center
 
