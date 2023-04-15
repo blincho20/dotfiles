@@ -96,7 +96,7 @@
 # Layout stuff:
 #
 	# Layout mode for new containers
-	#workspace_layout stacking
+	workspace_layout stacking
 
 	# split in horizontal/vertical orientation
 	bindsym $mod+o split toggle
@@ -127,6 +127,11 @@
 	bindsym $mod+3 workspace number 3
 	bindsym $mod+4 workspace number 4
 	bindsym $mod+5 workspace number 5
+	bindsym $mod+6 workspace number 6
+	bindsym $mod+7 workspace number 7
+	bindsym $mod+8 workspace number 8
+	bindsym $mod+9 workspace number 9
+	bindsym $mod+0 workspace number 10
 
 	# Move focused container to workspace
 	bindsym $mod+Shift+1 move container to workspace number 1
@@ -134,13 +139,23 @@
 	bindsym $mod+Shift+3 move container to workspace number 3
 	bindsym $mod+Shift+4 move container to workspace number 4
 	bindsym $mod+Shift+5 move container to workspace number 5
+	bindsym $mod+Shift+6 move container to workspace number 6
+	bindsym $mod+Shift+7 move container to workspace number 7
+	bindsym $mod+Shift+8 move container to workspace number 8
+	bindsym $mod+Shift+9 move container to workspace number 9
+	bindsym $mod+Shift+0 move container to workspace number 10
 
 	# Workspaces on specific screens
 	workspace 1 output $m1
 	workspace 2 output $m1
 	workspace 3 output $m1
 	workspace 4 output $m1
-	workspace 5 output $m2
+	workspace 5 output $m1
+	workspace 6 output $m2
+	workspace 7 output $m2
+	workspace 8 output $m2
+	workspace 9 output $m2
+	workspace 10 output $m2
 
 	# Changing workspaces
 	bindsym $mod+b workspace prev
@@ -196,7 +211,7 @@ client.background       #FFFFFF
 # Status Bar:
 #
 bar {
-colors {
+  colors {
     background #000000
     statusline #FFFFFF
     separator  #666666
@@ -207,10 +222,7 @@ colors {
     urgent_workspace   #EC69A0 #DB3279 #FFFFFF
     binding_mode       #b691d3 #A07CBC #FFFFFF
   }
-  status_command i3blocks -c ~/.config/i3/i3blocks.conf
-  position bottom
-  tray_output none
-  output $m1
+	tray_output none
 }
 
 #
@@ -220,9 +232,9 @@ colors {
 	assign [class="firefox"] workspace 2
 	assign [class="thunderbird"] workspace 2
 	assign [class="Blender"] workspace 3
-	assign [class="Steam"] workspace 4
-	assign [class="discord"] workspace 5
-	assign [class="PureRef"] workspace 5
+	assign [class="discord"] workspace 6
+	assign [class="PureRef"] workspace 7
+	assign [class="Steam"] workspace 10
 
 	# Some applications needs to be floating.
 	for_window [class="Gpick"] floating enable
@@ -237,4 +249,5 @@ colors {
 	for_window [window_role="Preferences"] floating enable
 	for_window [window_type="dialog"] floating enable
 	for_window [window_type="menu"] floating enable
+
 
