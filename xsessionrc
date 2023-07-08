@@ -1,0 +1,10 @@
+xrandr --output DP-1 --primary &
+xrandr --output HDMI-0 --right-of DP-1 &
+
+~/.fehbg &
+picom &
+caffeine-indicator &
+
+/usr/bin/lxpolkit &
+
+exec i3
