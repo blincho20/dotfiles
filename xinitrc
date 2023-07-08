@@ -1,10 +1,8 @@
 #!/bin/sh
 
-xrandr --output DP-1 --primary &
-xrandr --output HDMI-0 --right-of DP-1 &
+# /etc/X11/xinit/xinitrc
+#
+# global xinitrc file, used by all X sessions started by xinit (startx)
 
-~/.fehbg &
-
-/usr/libexec/xfce-polkit &
-
-exec dbus-launch --exit-with-session i3
+# invoke global X session script
+. /etc/X11/Xsession
