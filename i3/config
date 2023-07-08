@@ -14,13 +14,16 @@
 # Start XDG autostart .desktop files using dex.
 	exec --no-startup-id dex-autostart --autostart --environment i3
 
+# Focus workspace on start.
+	exec --no-startup-id i3-msg workspace 2:www
+
 # Idle config.
 	exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --color=000000 --nofork
 #
 # Multimedia keys:
 #
-	bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-	bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+	bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+	bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 	bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 	bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 	bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
@@ -38,15 +41,21 @@
 	# Start a terminal
 	bindsym $mod+Return exec --no-startup-id $term
 
-	# Start a browser
+	# Start a browser & email
 	bindsym $mod+w exec --no-startup-id $browser
 	bindsym $mod+Shift+w exec --no-startup-id $browser --private-window
+	bindsym $mod+e exec --no-startup-id thunderbird
+
+	# Start file manager
+	bindsym $mod+f exec --no-startup-id $term -e ranger
+	bindsym $mod+Shift+f exec --no-startup-id pcmanfm
 
 	# Kill focused window
 	bindsym $mod+Shift+q kill
 
 	# Start dmenu
-	bindsym $mod+d exec --no-startup-id "dmenu_run -nf '#BBBBBB' -nb '#222222' -sb '#005577' -sf '#EEEEEE' -fn 'monospace-10' -m 0 -b"
+	#bindsym $mod+d exec --no-startup-id "dmenu_run -fn 'monospace-10' -m 0 -b"
+	bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 	# Start rofi
 	bindsym XF86Search exec --no-startup-id "rofi -modi drun,run -show drun -show-icons -m DP-1"
@@ -55,10 +64,11 @@
 	bindsym XF86Calculator exec --no-startup-id $term -e calc
 
 	# Start volume control
-	bindsym $mod+p exec --no-startup-id pavucontrol
+	bindsym $mod+p exec --no-startup-id $term -e pulsemixer
+	bindsym $mod+Shift+p exec --no-startup-id pavucontrol
 
 	# Start CPU/GPU process monitoring
-	bindsym $mod++Escape exec --no-startup-id $term -e htop
+	bindsym $mod+Escape exec --no-startup-id $term -e htop
 	bindsym $mod+Shift+Escape exec --no-startup-id $term -e nvtop
 
 	# Screen lock.
@@ -92,21 +102,22 @@
 
 	# Move position to center
 	bindsym $mod+c move position center
+
+	# Automatic back-and-forth
+	workspace_auto_back_and_forth yes
+
 #
 # Layout stuff:
 #
 	# Layout mode for new containers
-	workspace_layout stacking
-
-	# split in horizontal/vertical orientation
-	bindsym $mod+o split toggle
+	workspace_layout tabbed
 
 	# enter fullscreen mode for the focused container
-	bindsym $mod+f fullscreen toggle
+	bindsym $mod+m fullscreen toggle
 
 	# change container layout (stacked, tabbed, toggle split)
 	bindsym $mod+s layout stacking
-
+	bindsym $mod+t layout tabbed
 
 	# toggle tiling / floating
 	bindsym $mod+Shift+space floating toggle
@@ -115,23 +126,23 @@
 	bindsym $mod+space focus mode_toggle
 
 	# Disable title bars.
-	for_window [class="^.*"] border pixel 1
+	#for_window [class="^.*"] border pixel 1
 	# Hiding borders
 	hide_edge_borders smart
 #
 # Workspaces:
 #
 	# Switch to workspace
-	bindsym $mod+1 workspace number 1
-	bindsym $mod+2 workspace number 2
-	bindsym $mod+3 workspace number 3
-	bindsym $mod+4 workspace number 4
-	bindsym $mod+5 workspace number 5
-	bindsym $mod+6 workspace number 6
-	bindsym $mod+7 workspace number 7
-	bindsym $mod+8 workspace number 8
-	bindsym $mod+9 workspace number 9
-	bindsym $mod+0 workspace number 10
+	bindsym $mod+1 workspace number 1:dev
+	bindsym $mod+2 workspace number 2:www
+	bindsym $mod+3 workspace number 3:2D/3D
+	bindsym $mod+4 workspace number 4:files
+	bindsym $mod+5 workspace number 5:music
+	bindsym $mod+6 workspace number 6:video
+	bindsym $mod+7 workspace number 7:torrents
+	bindsym $mod+8 workspace number 8:chat
+	bindsym $mod+9 workspace number 9:games
+	bindsym $mod+0 workspace number 10:misc
 
 	# Move focused container to workspace
 	bindsym $mod+Shift+1 move container to workspace number 1
@@ -151,10 +162,10 @@
 	workspace 3 output $m1
 	workspace 4 output $m1
 	workspace 5 output $m1
-	workspace 6 output $m2
-	workspace 7 output $m2
-	workspace 8 output $m2
-	workspace 9 output $m2
+	workspace 6 output $m1
+	workspace 7 output $m1
+	workspace 8 output $m1
+	workspace 9 output $m1
 	workspace 10 output $m2
 
 	# Changing workspaces
@@ -179,7 +190,7 @@
 	# Screenshot and copy to clipboard
 	bindsym Print exec --no-startup-id maim -s | xclip -selection clipboard -t image/png
 	# Full screenshot
-	bindsym $mod+Print exec --no-startup-id maim -i $(xdotool getactivewindow) ~/pictures/$(date +%s).png
+	bindsym $mod+Print exec --no-startup-id maim -i $(xdotool getactivewindow) ~/Pictures/$(date +%s).png
 #
 # Resize windows:
 #
@@ -196,49 +207,34 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
-#
-# Color scheme:
-# class                 border  bground text    indicator child_border
-client.focused          #83CAFA #51A2DA #FFFFFF #83CAFA   #51A2DA
-client.focused_inactive #8C8C8C #4C4C4C #FFFFFF #4C4C4C   #8C8C8C
-client.unfocused        #4C4C4C #222222 #888888 #292D2E   #222222
-client.urgent           #EC69A0 #DB3279 #FFFFFF #DB3279   #DB3279
-client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #0C0C0C
-
-client.background       #FFFFFF
 
 #
 # Status Bar:
 #
 bar {
-  colors {
-    background #000000
-    statusline #FFFFFF
-    separator  #666666
-
-    focused_workspace  #83CAFA #51A2DA #FFFFFF
-    active_workspace   #3C6EB4 #294172 #FFFFFF
-    inactive_workspace #8C8C8C #4C4C4C #888888
-    urgent_workspace   #EC69A0 #DB3279 #FFFFFF
-    binding_mode       #b691d3 #A07CBC #FFFFFF
-  }
-	tray_output none
+	status_command i3status -c ~/.config/i3/i3status.conf
+	position top
+	output primary
+	strip_workspace_numbers yes
 }
 
 #
 # Misc:
 #
 	# Automatically putting clients on specific workspaces
-	assign [class="firefox"] workspace 2
-	assign [class="thunderbird"] workspace 2
-	assign [class="Blender"] workspace 3
-	assign [class="discord"] workspace 6
-	assign [class="PureRef"] workspace 7
-	assign [class="Steam"] workspace 10
+	assign [class="Firefox-esr"] workspace 2:www
+	assign [class="thunderbird"] workspace 2:www
+	assign [class="Blender"] workspace 3:blender
+	assign [class="Pcmanfm"] workspace 4:files
+	assign [class="Spotify"] workspace 5:music
+	assign [class="mpv"] workspace 6:video
+	assign [class="Transmission-gtk"] workspace 7:torrents
+	assign [class="discord"] workspace 8:chat
+	assign [class="steam"] workspace 9:games
 
 	# Some applications needs to be floating.
-	for_window [class="Gpick"] floating enable
-	for_window [class="Gpick"] move position center
+	for_window [title="pulsemixer"] floating enable
+	for_window [title="pulsemixer"] move position center
 	for_window [class="pentablet"] floating enable
 	for_window [class="pentablet"] move position center
 
@@ -249,5 +245,3 @@ bar {
 	for_window [window_role="Preferences"] floating enable
 	for_window [window_type="dialog"] floating enable
 	for_window [window_type="menu"] floating enable
-
-
